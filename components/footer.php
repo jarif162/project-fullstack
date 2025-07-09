@@ -123,6 +123,25 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
+<!-- <script>
+  //stop the right click context menu
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  }, false);
+</script> -->
+
+<!-- <script>
+  // stop the  f12 and ctrl + shift + i using keyboard key numbr 
+  document.addEventListener('keydown', function(e) {
+    if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) {
+      e.preventDefault();
+      alert("This action is disabled.");
+    }
+  });
+</script> -->
+
+
 </body>
 
 </html>

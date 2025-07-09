@@ -29,7 +29,7 @@
               echo $fullNameArr[0] ?>
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">My profile</a></li>
+              <li><a class="dropdown-item" href="./my-profile.php">My profile</a></li>
               <li><a class="dropdown-item" href="#">Change password</a></li>
               <li><a class="dropdown-item" href="#">Admin Panel</a></li>
               <li>
