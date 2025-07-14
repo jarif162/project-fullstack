@@ -157,6 +157,8 @@ if (isset($_POST['updateProfile'])) {
 
 
 
+
+
 <?php
 require_once './components/footer.php';
 
