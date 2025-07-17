@@ -45,7 +45,7 @@ $conn = mysqli_connect('localhost', 'root', '', 'jarif');
     }
   </style>
 
-  <!-- ckeditor -->
+  <!-- quill -->
   <script src="https://cdn.ckbox.io/ckbox/2.8.0/ckbox.js"></script>
 
 

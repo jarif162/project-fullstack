@@ -49,6 +49,18 @@ if (isset($_POST['updateProfile'])) {
     } else {
         $crrAddress = $conn->real_escape_string($address);
     }
+
+
+    if (isset($crrName) && isset($crrEmail) && isset($crrGender) && isset($crrAddress)) {
+        $sql = "UPDATE users SET `name` = '$crrName', `email`   = '$crrEmail', `gender` = '$crrGender', `address` = '$crrAddress' WHERE id = $userID";
+        $result = $conn->query($sql);
+        if ($result) {
+            $_SESSION['user'] = $conn->query("SELECT * FROM users WHERE `id` = $userID")->fetch_object();
+            echo "<script>alert('Profile updated successfully');</script>";
+        } else {
+            echo "<script>alert('Error updating profile');</script>";
+        }
+    }
 }
 
 
@@ -62,7 +74,7 @@ if (isset($_POST['updateProfile'])) {
                 <!-- name section -->
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text " class="form-control <?= isset($errName) ? "is-invalid" : null ?> " name="name" value="<?= isset($userInfo->name) ? $userInfo->name : null ?>">
+                    <input type="text " class="form-control <?= isset($errName) ? "is-invalid" : null ?> " name="name" value="<?= $name ?? $userInfo->name ?? null ?>">
 
                     <div class="invalid-feedback">
                         <?php
@@ -78,7 +90,7 @@ if (isset($_POST['updateProfile'])) {
                 <!-- email section -->
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control <?= isset($errEmail) ? "is-invalid" : null ?>" name="email" value="<?= isset($userInfo->email) ? $userInfo->email : null ?>">
+                    <input type="email" class="form-control <?= isset($errEmail) ? "is-invalid" : null ?>" name="email" value="<?= $email ?? $userInfo->email ?? null ?>">
 
                     <div class="invalid-feedback">
                         <?php
@@ -97,15 +109,15 @@ if (isset($_POST['updateProfile'])) {
                         <input type="text" class="form-control position-absolute top-0 start-0 z-n1 bg-white <?= isset($errGender) ? "is-invalid" : null ?>" disabled>
 
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" id="male" value="Male" name="gender" <?= $userInfo->gender == "Male" ? "checked" : null  ?>>
+                            <input type="radio" class="form-check-input" id="male" value="Male" name="gender" <?= $userInfo->gender == "Male" ? "checked" : (isset($gender) && $gender == "Male" ? "checked" : null)  ?>>
                             <label class="form-label" for="male">Male</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" id="female" value="Female" name="gender" <?= $userInfo->gender == "Female" ? "checked" : null  ?>>
+                            <input type="radio" class="form-check-input" id="female" value="Female" name="gender" <?= $userInfo->gender == "Female" ? "checked" : ((isset($gender) && $gender == "Female" ? "checked" : null))  ?>>
                             <label class="form-label" for="female">Female</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" id="others" value="Others" name="gender" <?= $userInfo->gender == "Others" ? "checked" : null  ?>>
+                            <input type="radio" class="form-check-input" id="others" value="Others" name="gender" <?= $userInfo->gender == "Others" ? "checked" : (isset($gender) && $gender == "Others" ? "checked" : null)  ?>>
                             <label class="form-label" for="others">Others</label>
                         </div>
 

@@ -30,7 +30,8 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="./my-profile.php">My profile</a></li>
-              <li><a class="dropdown-item" href="#">Change password</a></li>
+              <li><a class="dropdown-item" href="./changePassword.php">Change password</a></li>
+              <li><a class="dropdown-item" href="./ChangeProfilePicture.php" title="Change profile Picture">Change profile Picture</a></li>
               <li><a class="dropdown-item" href="#">Admin Panel</a></li>
               <li>
                 <hr class="dropdown-divider">
