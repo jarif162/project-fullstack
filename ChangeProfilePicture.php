@@ -11,6 +11,39 @@ if (!isset($_SESSION['user'])) {
 $userID = $_SESSION['user']->id;
 
 
+if (isset($_POST['updateProfilePicture'])) {
+    $profilePicture = $_FILES['profilePicture'] ?? null;
+
+    if (empty($profilePicture['name'])) {
+        $errProfilePicture = "Please select a profile picture.";
+    } elseif ($profilePicture['size'] > 2000000) {
+        $errProfilePicture = "Profile picture size should be less than 2 MB.";
+    } elseif (!in_array($profilePicture['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
+        $errProfilePicture = "Invalid file type. Only JPEG, PNG, and GIF are allowed.";
+    } else {
+        $imageExt = pathinfo($profilePicture['name'], PATHINFO_EXTENSION);
+        $newFileName = uniqid() . date("hmsmdy") . rand(1000, 9999) . '.' . $imageExt;
+        $targetDir = './assets/profilePicture/';
+        $targetFile = $targetDir . "/" . $newFileName;
+        $tempImage = $_FILES['profilePicture']['tmp_name'];
+        if (move_uploaded_file($tempImage, $targetFile)) {
+            // Delete the old profile picture if it exists
+            unlink($targetDir . $_SESSION['user']->picture);
+            $query = "UPDATE users SET picture = '$newFileName ' WHERE id = '$userID'";
+            $result = mysqli_query($conn, $query);
+            if ($result) {
+                $_SESSION['user']->picture = $newFileName;
+                echo "<script>toastr.success('Profile picture updated successfully',setTimeout(() => location.href = './ChangeProfilePicture.php', 2000));</script>";
+            } else {
+                $errProfilePicture = "Failed to update profile picture in the database.";
+            }
+        } else {
+            $errProfilePicture = "Failed to upload the profile picture. Please try again.";
+        }
+    }
+}
+
+
 
 
 
@@ -24,7 +57,7 @@ $userID = $_SESSION['user']->id;
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="profilePicture" class="form-label">Profile Picture</label>
-                    <img src="<?= $_SESSION['user']->profile_picture ?? "./assets/profilePicture/pp.png" ?>" alt="Profile Picture" class="img-fluid mb-3" style="max-width: 200px;" id="profilePicturePreview">
+                    <img src="<?= isset($_SESSION['user']->picture) ? "./assets/profilePicture/" . $_SESSION['user']->picture : "./assets/profilePicture/default.jpg" ?>" alt="Profile Picture" class="img-fluid mb-3" style="max-width: 200px;" id="profilePicturePreview">
                     <p class="text-muted">Upload a new profile picture (JPEG, PNG, GIF)</p>
                     <input type="file" name="profilePicture" id="profilePicture" name="profilePicture" accept="image/jpeg, image/png, image/gif"
                         class="form-control <?= isset($errProfilePicture) ? "is-invalid" : null ?>"
