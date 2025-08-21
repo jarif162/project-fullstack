@@ -1,6 +1,6 @@
 <?php
 session_start();
-$pageName = basename($_SERVER['PHP_SELF']);
+$pageName = basename($_SERVER['PHP_SELF']); // to get the current page name
 function sanitize($data)
 {
   return htmlspecialchars(strip_tags(trim($data)));

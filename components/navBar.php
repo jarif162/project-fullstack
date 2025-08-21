@@ -32,7 +32,9 @@
               <li><a class="dropdown-item" href="./my-profile.php">My profile</a></li>
               <li><a class="dropdown-item" href="./changePassword.php">Change password</a></li>
               <li><a class="dropdown-item" href="./ChangeProfilePicture.php" title="Change profile Picture">Change profile Picture</a></li>
-              <li><a class="dropdown-item" href="#">Admin Panel</a></li>
+              <?php if ($_SESSION['user']->role == "admin") { ?>
+                <li><a class="dropdown-item" href="./admin">Admin Panel</a></li>
+              <?php }  ?>
               <li>
                 <hr class="dropdown-divider">
               </li>

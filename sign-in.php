@@ -1,7 +1,8 @@
 <?php
 require_once './components/header.php';
 //setCookie trycount=0
-if (isset($_SESSION['user'])) {
+if (isset($_SESSION['user']) //check if user is already logged in
+) {
     header("Location: index.php");
     exit();
 }
@@ -57,6 +58,8 @@ if (isset($_POST['signin123'])) {
 
             $checkEmail = $conn->query($sql);
             if ($checkEmail->num_rows != 1) {
+                //$checkEmail->num_rows ->explain how it works in php
+
 
                 echo "<script>toastr.error('No user found with this email');</script>";
                 setcookie('trycount', $_COOKIE['trycount'] + 1, time() + 60 * 15, "/"); // Increment trycount
