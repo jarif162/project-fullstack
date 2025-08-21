@@ -25,7 +25,7 @@ require_once("./sidebar.php");
         <div class="col-12">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1>Dashboard</h1>
+                    <h1>Add new product</h1>
                 </div>
             </div>
         </div>

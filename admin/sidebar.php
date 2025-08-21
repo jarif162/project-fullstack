@@ -12,7 +12,7 @@
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="index.html"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                    <a href="./"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                 </li>
                 <h3 class="menu-title">UI elements</h3><!-- /.menu-title -->
                 <li class="menu-item-has-children dropdown">
@@ -40,13 +40,17 @@
 
                 <h3 class="menu-title">Icons</h3><!-- /.menu-title -->
 
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Products</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-fort-awesome"></i><a href="font-fontawesome.html">All Products </a></li>
-                        <li><i class="menu-icon ti-themify-logo"></i><a href="font-themify.html">Add New Product </a></li>
+                <li class="menu-item-has-children dropdown  <?= $pageName == "add-new-product.php" ? "show" : null ?> ">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="<?= $pageName == "add-new-product.php" ? true : false ?>"> <i class="menu-icon fa fa-tasks"></i>Products</a>
+                    <ul class="sub-menu children dropdown-menu <?= $pageName == "add-new-product.php" ? "show" : null ?>">
+                        <li><i class="menu-icon fa fa-fort-awesome"></i><a href="./product-categories.php"
+                                style="font-weight: <?= $pageName == "product-categories.php" ? "bold" : "regular" ?> ;">Categories </a></li>
+                        <li><i class="menu-icon fa fa-fort-awesome"></i><a href="./allProduct.php"
+                                style="font-weight: <?= $pageName == "allProduct.php" ? "bold" : "regular" ?> ;">All Products </a></li>
+                        <li><i class="menu-icon ti-themify-logo"></i><a href="./add-new-product.php" style="font-weight: <?= $pageName == "add-new-product.php" ? "bold" : "regular" ?> ;">Add New Product </a></li>
                     </ul>
                 </li>
+
 
 
 

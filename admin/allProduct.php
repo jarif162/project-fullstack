@@ -25,11 +25,27 @@ require_once("./sidebar.php");
         <div class="col-12">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1>Dashboard</h1>
+                    <h1>Add product</h1>
                 </div>
             </div>
         </div>
 
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <input type="text" placeholder="product name" name=" " class="form-control">
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- .content -->
