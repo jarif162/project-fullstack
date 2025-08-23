@@ -3,6 +3,12 @@
 session_start();
 $pageName = basename($_SERVER['PHP_SELF']);
 
+function sanitize($data)
+{
+    return htmlspecialchars(trim($data));
+}
+
+$conn = mysqli_connect("localhost", "root", "", "jarif");
 ?>
 
 <!doctype html>
@@ -30,7 +36,35 @@ $pageName = basename($_SERVER['PHP_SELF']);
 
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css">
+
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        toastr.options = {
+
+            "positionClass": "toast-bottom-center",
+            "showMethod": "slideDown",
+            "progressBar": true,
+            "timeOut": "3000",
+            "toastClass": "toastr",
+        }
+    </script>
+
+    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js">
+
+    </script>
+
+    <style>
+        .toastr {
+            background-color: red !important;
+            transform: translateY(-200%);
+        }
+    </style>
+
 
 </head>
 
