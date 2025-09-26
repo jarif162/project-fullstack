@@ -40,14 +40,14 @@
 
                 <h3 class="menu-title">Icons</h3><!-- /.menu-title -->
 
-                <li class="menu-item-has-children dropdown  <?= $pageName == "add-new-product.php" ? "show" : null ?> ">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="<?= $pageName == "add-new-product.php" ? true : false ?>"> <i class="menu-icon fa fa-tasks"></i>Products</a>
-                    <ul class="sub-menu children dropdown-menu <?= $pageName == "add-new-product.php" ? "show" : null ?>">
+                <li class="menu-item-has-children dropdown  <?= $pageName == "addNewProduct.php" ? "show" : null ?> ">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="<?= $pageName == "addNewProduct.php" ? true : false ?>"> <i class="menu-icon fa fa-tasks"></i>Products</a>
+                    <ul class="sub-menu children dropdown-menu <?= $pageName == "addNewProduct.php" ? "show" : null ?>">
                         <li><i class="menu-icon fa fa-fort-awesome"></i><a href="./product-categories.php"
                                 style="font-weight: <?= $pageName == "product-categories.php" ? "bold" : "regular" ?> ;">Categories </a></li>
                         <li><i class="menu-icon fa fa-fort-awesome"></i><a href="./allProduct.php"
                                 style="font-weight: <?= $pageName == "allProduct.php" ? "bold" : "regular" ?> ;">All Products </a></li>
-                        <li><i class="menu-icon ti-themify-logo"></i><a href="./add-new-product.php" style="font-weight: <?= $pageName == "add-new-product.php" ? "bold" : "regular" ?> ;">Add New Product </a></li>
+                        <li><i class="menu-icon ti-themify-logo"></i><a href="./addNewProduct.php" style="font-weight: <?= $pageName == "addNewProduct.php" ? "bold" : "regular" ?> ;">Add New Product </a></li>
                     </ul>
                 </li>
 

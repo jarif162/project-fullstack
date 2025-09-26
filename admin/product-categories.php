@@ -4,193 +4,183 @@ require_once("./sidebar.php");
 
 //include_once->if the file is not found, the script will continue to run
 //require_once->if the file is not found, the script will throw an error and stop execution
-
 if (isset($_POST['addCat'])) {
     $name = sanitize($_POST['name']);
 
-    //validation
+    // validation
     if (empty($name)) {
-        $errName = "Name is required";
+        $errUpName = "Please enter a category name";
     } else {
         $sql = "SELECT * FROM `product_categories` WHERE `name` = '$name'";
         if ($conn->query($sql)->num_rows > 0) {
-            $errName = "Category already exists";
+            $errUpName = "Category already exists";
         } else {
             $sql = "INSERT INTO `product_categories` (`name`) VALUES ('$name')";
-            if ($conn->query($sql) == true) {
+            if ($conn->query($sql) === TRUE) {
                 echo "<script>toastr.success('Category added successfully')</script>";
             }
         }
     }
 }
 
+if (isset($_POST['upCat'])) {
+    $upCatId = $_POST['upCatId'];
+    $oldCatName = $_POST['oldCatName'];
+    $name = sanitize($_POST['name']);
 
-$getCatQuery = "SELECT * FROM `product_categories`";
+    // validation
+    if (empty($name)) {
+        $errName = "Please enter a category name";
+    } else {
+        if ($oldCatName == $name) {
+            echo "<script>toastr.info('No changes made')</script>";
+        } else {
+            $sql = "SELECT * FROM `product_categories` WHERE `name` = '$name'";
+            if ($conn->query($sql)->num_rows > 0) {
+                $errName = "Category already exists";
+            } else {
+                $sql = "UPDATE `product_categories` SET `name` = '$name' WHERE `id` = '$upCatId'";
+                if ($conn->query($sql) === TRUE) {
+                    echo "<script>toastr.success('Category updated successfully');setTimeout(()=> location.href='./product-categories.php', 2000)</script>";
+                }
+            }
+        }
+    }
+}
+
+if (isset($_POST['delCat'])) {
+    $catId = $_POST['catId'];
+    $sql = "DELETE FROM `product_categories` WHERE `id` = '$catId'";
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>toastr.success('Category deleted successfully');setTimeout(()=> location.href='./product-categories.php', 2000)</script>";
+    }
+}
+
+$getCatQuery = "SELECT * FROM `product_categories` ORDER BY `id` DESC";
 $getCatResult = $conn->query($getCatQuery);
-
 if ($getCatResult->num_rows > 0) {
     $categories = $getCatResult->fetch_object();
 }
-
-
 ?>
-
-
-
-
-
 
 <div id="right-panel" class="right-panel">
 
-    <?php
-
-    require_once("./topbar.php");
-
-    ?>
+    <?php require_once('./topBar.php') ?>
 
     <div class="breadcrumbs">
         <div class="col-12">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1>categories</h1>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <?php
-                    if (!isset($categories)) { ?>
-                        <h2 class="mb-3">No categories</h2>
-
-                    <?php } else { ?>
-                        <!-- all categories show and fetch from database  by table use loop foreach-->
-                        <h2 class="mb-3">All categories</h2>
-                        <table id="catList" class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Sl</th>
-                                    <th scope="col">Category</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $sl = 1;
-                                $getCatQuery = "SELECT * FROM `product_categories` ORDER BY id DESC";
-                                $getCatResult = $conn->query($getCatQuery);
-
-                                if ($getCatResult->num_rows > 0) {
-                                    while ($row = $getCatResult->fetch_assoc()) {
-                                ?>
-                                        <tr>
-                                            <th scope="row"><?= $sl++ ?></th>
-                                            <td><?= htmlspecialchars($row['name']) ?></td>
-                                            <td>
-                                                <a href="product-categories.php?eid=<?= $row['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
-                                                <a href="product-categories.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
-                                            </td>
-                                        </tr>
-                                <?php
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='3' class='text-center'>No categories found</td></tr>";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    <?php } ?>
-
-
-                </div>
-                <div class="col-md-6">
-                    <form action="" method="post">
-                        <h2 class="mb-3">Add New category</h2>
-                        <div class="mb-3">
-                            <input type="text" placeholder="Enter your category" class="form-control <?= isset($errName) ? "is-invalid" : null ?>" name="name">
-                            <div class="invalid-feedback">
-                                <?= isset($errName) ? $errName : null ?>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-dark" name="addCat">Add category</button>
-
-                    </form>
-
-                    <?php
-                    if (isset($_GET['eid'])) {
-                        $id = (int) $_GET['eid']; // force integer
-                        $getCatQuery = "SELECT * FROM `product_categories` WHERE id = $id";
-                        $getCatResult = $conn->query($getCatQuery);
-                        $category = $getCatResult->fetch_object();
-                    }
-
-                    ?>
-
-
-
-
-                    <form action="" method="post">
-                        <h2 class="mb-3">Edit category</h2>
-                        <div class="mb-3">
-                            <input type="text" placeholder="Enter your category" class="form-control" name="name" value="<?= isset($category) ? $category->name : null ?>">
-                        </div>
-
-                        <input type="hidden" name="id" value="<?= isset($category) ? $category->id : null ?>">
-                        <button type="submit" class="btn btn-dark" name="updateCat">Update category</button>
-
-                    </form>
-
-
-                    <?php
-                    // ==================== UPDATE CATEGORY ====================
-                    if (isset($_POST['updateCat'])) {
-                        $id = (int) $_POST['id']; // force integer for safety
-                        $name = sanitize($_POST['name']);
-
-                        // validation
-                        if (empty($name)) {
-                            echo "<script>toastr.error('Category name is required')</script>";
-                        } else {
-                            // check if category with the same name already exists (excluding current one)
-                            $checkSql = "SELECT * FROM `product_categories` WHERE `name` = '$name' AND id != $id";
-                            $checkResult = $conn->query($checkSql);
-
-                            if ($checkResult->num_rows > 0) {
-                                echo "<script>toastr.error('Category already exists')</script>";
-                            } else {
-                                $sql = "UPDATE `product_categories` SET `name` = '$name' WHERE id = $id";
-                                if ($conn->query($sql) === TRUE) {
-                                    echo "<script>toastr.success('Category updated successfully'); 
-                      window.location.href='product-categories.php';</script>";
-                                } else {
-                                    echo "<script>toastr.error('Something went wrong!')</script>";
-                                }
-                            }
-                        }
-                    }
-
-
-
-                    ?>
+                    <h1>Categories</h1>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- .content -->
+    <?php if (!isset($_GET['did'])) { ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <?php if (!isset($categories)) { ?>
+                        <h2 class="mb-3">No Categories Found</h2>
+                    <?php } else { ?>
+                        <h2 class="mb-3">Categories</h2>
+                        <table class="table table-striped" id="catList">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Category Name</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $i = 1;
+                                do {
+                                ?>
+                                    <tr>
+                                        <th scope="row"><?= $i++ ?></th>
+                                        <td><?= $categories->name ?></td>
+                                        <td>
+                                            <a href="./product-categories.php?eid=<?= $categories->id ?>" class="btn btn-primary btn-sm">Edit</a>
+                                            <a href="./product-categories.php?did=<?= $categories->id ?>" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                <?php
+                                } while ($categories = $getCatResult->fetch_object());
+                                ?>
+                            </tbody>
+                        </table>
+                    <?php } ?>
+                </div>
+                <div class="col-md-6">
+                    <h2 class="mb-3">Add New Category</h2>
+                    <form action="" method="post">
+                        <div class="mb-3">
+                            <input type="text" placeholder="Category Name" class="form-control <?= isset($errName) ? "is-invalid" : null ?>" name="name">
+                            <div class="invalid-feedback">
+                                <?= $errName ?? null ?>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="addCat">Add Category</button>
+                    </form>
+
+                    <?php if (isset($_GET['eid'])) { ?>
+                        <h2 class="my-3">Edit Category</h2>
+                        <?php
+                        $catId = $_GET['eid'];
+                        $getCatQuery = "SELECT * FROM `product_categories` WHERE `id` = '$catId'";
+                        $getCatResult = $conn->query($getCatQuery);
+                        if ($getCatResult->num_rows > 0) {
+                            $category = $getCatResult->fetch_object();
+                        }
+                        ?>
+
+                        <?php
+                        if (isset($category)) {
+                        ?>
+                            <form action="" method="post">
+                                <input type="hidden" name="upCatId" value="<?= $category->id ?>">
+                                <input type="hidden" name="oldCatName" value="<?= $category->name ?>">
+                                <div class="mb-3">
+                                    <input type="text" placeholder="Category Name" class="form-control <?= isset($errUpName) ? "is-invalid" : null ?>" name="name" value="<?= $category->name ?>">
+                                    <div class="invalid-feedback">
+                                        <?= $errUpName ?? null ?>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" name="upCat">Update Category</button>
+                                <a href="./product-categories.php" class="btn btn-success"><i class="fa-solid fa-arrow-left"></i> Cancel</a>
+                            </form>
+                        <?php } else { ?>
+                            <h2 class="mb-3">No Category Found</h2>
+                        <?php } ?>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    <?php } else { ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 h1 text-danger">
+                    Do you really want to delete the category?
+                    <form action="" method="post">
+                        <input type="hidden" name="catId" value="<?= $_GET['did'] ?>">
+                        <button type="submit" class="btn btn-danger" name="delCat">Delete</button>
+                        <a href="./product-categories.php" class="btn btn-success"><i class="fa-solid fa-arrow-left"></i> Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
 </div><!-- /#right-panel -->
 
 <!-- Right Panel -->
 
 <script>
     $("#catList").DataTable({
-        "lengthMenu": [5, 10, 15, 20, 25],
-        "pageLength": 5
+        "lengthMenu": [5, 10, 25, 50, 100],
+        "pageLength": 5,
     });
-    //if we use data table then 
 </script>
 
 
